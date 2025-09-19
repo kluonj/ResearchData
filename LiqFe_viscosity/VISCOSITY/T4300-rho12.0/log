@@ -1,0 +1,10 @@
+Loaded settings for the program:
+                 tw:           1500
+                 ts:           1000
+                 td:         400000
+                 tc:            200
+       header lines:              7
+               data:     stress.dat
+            verbose:              0
+Derived parameters:
+  # sim. to average:            399

@@ -1,0 +1,43 @@
+
+
+*******************************************************************************
+Mon Apr 24 09:43:31 2023
+
+
+FIT:    data read from "msd.dat" u 1:5
+        format = x:z
+        #datapoints = 1001
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 4.56629e+06       delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 692.994
+
+initial set of free parameter values
+
+D               = 0.1
+
+After 3 iterations the fit converged.
+final sum of squares of residuals : 110.05
+rel. change during last iteration : -4.12909e-12
+
+degrees of freedom    (FIT_NDF)                        : 1000
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.331738
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.11005
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+D               = 0.00253911       +/- 1.513e-05    (0.5959%)
+
+
+correlation matrix of the fit parameters:
+
+               D      
+D               1.000 

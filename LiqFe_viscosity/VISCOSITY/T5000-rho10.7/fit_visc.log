@@ -1,0 +1,52 @@
+
+
+*******************************************************************************
+Sat May  6 22:29:10 2023
+
+
+FIT:    data read from "eta.dat" u 1:5
+        format = x:z
+        #datapoints = 150
+        residuals are weighted equally (unit weight)
+
+function used for fitting: f(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 0.00307676        delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 0.149525
+
+initial set of free parameter values
+
+A               = 0.01
+a               = 0.5
+b1              = 0.5
+b2              = 1
+
+After 154 iterations the fit converged.
+final sum of squares of residuals : 4.32451e-08
+rel. change during last iteration : -5.17511e-07
+
+degrees of freedom    (FIT_NDF)                        : 146
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 1.72104e-05
+variance of residuals (reduced chisquare) = WSSR/ndf   : 2.962e-10
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+A               = 0.194084         +/- 0.000966     (0.4977%)
+a               = 0.801213         +/- 0.003505     (0.4375%)
+b1              = 0.0245746        +/- 0.0003145    (1.28%)
+b2              = 0.103457         +/- 0.0009277    (0.8967%)
+
+
+correlation matrix of the fit parameters:
+
+               A      a      b1     b2     
+A               1.000 
+a              -0.465  1.000 
+b1             -0.909  0.781  1.000 
+b2             -0.559  0.978  0.818  1.000 
