@@ -1,0 +1,108 @@
+# Aluminum Liquid-Vapor Coexistence Simulation ? Fully Parameterized
+
+units metal
+atom_style atomic
+dimension 3
+boundary p p p   # Free along z to form vapor
+
+# ---------------- User-Defined Parameters ----------------
+#variable rho_val     equal 0.8         # g/cm^3 (pass with -var rho <val>)
+#variable natoms_val  equal 8000        # total atoms
+#variable coa_val     equal 3.0         # Lz = coa_val * Lx
+#variable nsteps_val  equal 60000       # total time steps
+#variable highT_val   equal 10000        # K
+#variable lowT_val    equal 6000         # K
+
+
+# ---------------- Derived Numerical Variables ----------------
+variable rho_val     equal ${rho}
+variable natoms_val  equal ${natoms}
+variable coa_val     equal ${coa}
+variable nsteps_val  equal ${nsteps}
+variable highT_val   equal ${highT}
+variable lowT_val    equal ${lowT}
+
+
+variable mass    equal 26.9815     # amu (Al)
+variable amu     equal 1.6605390402
+
+# ---------------- Derived Box Dimensions ----------------
+variable vol     equal ${mass}*${amu}*${natoms_val}/${rho_val}           # total volume Å^3
+variable Lx      equal (${vol}/${coa_val})^(1.0/3.0)
+variable Ly      equal ${Lx}
+variable Lz      equal ${coa_val}*${Lx}
+
+# ---------------- Build the Simulation Box ----------------
+region box block 0 ${Lx} 0 ${Ly} 0 ${Lz} units box
+create_box 1 box
+
+# Randomly fill box with atoms
+lattice fcc 4.05
+create_atoms 1 random ${natoms_val} 12345 box
+
+mass 1 ${mass}
+
+# ---------------- Potential ----------------
+pair_style deepmd pair.pb 
+pair_coeff * * 
+
+neighbor 2.0 bin
+neigh_modify delay 10
+
+# ---------------- Velocity Initialization ----------------
+velocity all create ${highT_val} 12345 mom yes rot yes dist gaussian
+
+# ---------------- Time Integration ----------------
+variable    dt equal 0.001   # in ps in units metal
+timestep ${dt}
+
+# Quench in first half of run
+variable t_quench equal ${nsteps_val}/4
+variable t_hold   equal ${nsteps_val}/4*3
+
+
+variable Tdamp equal ${dt}*100
+variable Pdamp equal ${dt}*1000
+
+
+# Density profile along z
+variable dz equal ${Lz}/100
+
+# Define spatial bins along z using chunk/atom
+#compute p all  stress/atom NULL
+compute p all centroid/stress/atom NULL virial
+compute bins all chunk/atom bin/1d z lower ${dz} units box
+
+# Compute number density in each bin
+fix dens all ave/chunk 100 10 1000 bins density/mass c_p[1] c_p[2] c_p[3] file density_z.profile ave one
+
+
+# ---------------- Output ----------------
+# interfacial tension
+variable IFT equal (-((zhi-zlo)/2.0)*(((pxx+pyy)/2.0)-pzz)) # in unit of bar, if use unit real, need to *0.0101325
+fix aves all ave/time 50 2000  100000	c_thermo_temp c_thermo_press[1] c_thermo_press[2] c_thermo_press[3] v_IFT   file ave.lammps
+
+thermo 20
+thermo_style custom step temp press pxx pyy pzz  etotal
+
+# Trajectory dump
+#dump 1 all xyz 10000 traj.dump
+#dump_modify traj sort id
+
+
+# ---------------- Run ----------------
+fix nvt1 all nvt temp ${highT_val} ${highT_val} ${Tdamp}
+run ${t_quench}
+unfix nvt1
+
+# Hold at lowT_val
+fix nvt2 all nvt temp ${lowT_val} ${lowT_val} ${Tdamp}
+
+#dump traj all custom 1 traj.dump id type x y z fx fy fz
+
+run ${t_hold}
+unfix nvt2
+
+write_data al_final.data
+
+

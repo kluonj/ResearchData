@@ -1,0 +1,73 @@
+{
+    "model": {
+        "_comment": " model parameters",
+        "type_map": [
+            "Al"
+        ],
+        "descriptor": {
+            "type": "se_e2_a",
+            "sel": "auto",
+            "rcut_smth": 0.5,
+            "rcut": 6.0,
+            "neuron": [
+                25,
+                50,
+                100
+            ],
+            "resnet_dt": false,
+	    "precision": "float32",
+            "axis_neuron": 8,
+            "type_one_side": true,
+            "seed": 679282378
+        },
+        "fitting_net": {
+            "neuron": [
+                80,
+                80,
+                80
+            ],
+            "resnet_dt": true,
+	    "precision": "float32",
+            "numb_fparam": 0,
+            "seed": 13938521
+        }
+    },
+    "loss": {
+        "start_pref_e": 0.01,
+        "limit_pref_e": 1,
+        "start_pref_f": 1000,
+        "limit_pref_f": 1,
+        "start_pref_v": 0,
+        "limit_pref_v": 0
+    },
+    "learning_rate": {
+        "type": "exp",
+        "start_lr": 0.0001,
+        "stop_lr": 1e-08,
+        "decay_steps": 5000
+    },
+    "training": {
+        "stop_batch": 5000000,
+        "disp_file": "lcurve.out",
+        "disp_freq": 200,
+        "save_freq": 10000,
+        "save_ckpt": "model.ckpt",
+        "disp_training": true,
+        "time_training": true,
+        "profiling": false,
+        "profiling_file": "timeline.json",
+        "training_data": {
+            "systems": [
+		"../aimd/Al64",
+                "../dpgen/Al64",
+                "../aimd_108/Al108"
+            ],
+            "batch_size": [
+                1,
+                1,
+                1
+            ]
+        },
+        "seed": 3101361778
+    }
+}
