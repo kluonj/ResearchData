@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 
 Al_LiqVap_Critical/coexistence/
+LiqFe_viscosity/
